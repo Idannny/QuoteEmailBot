@@ -1,24 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Material Order Form</title>
+    <title>Vendor Order Form</title>
 </head>
 <body>
-    <h1>Material Order Form</h1>
+    <h1>Vendor Order Form</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
+
         <p>
             {{ form.material_type.label }}<br>
             {{ form.material_type }}
         </p>
+
         <p>
             {{ form.quantity.label }}<br>
             {{ form.quantity }}
         </p>
+
         <p>
             {{ form.alloy.label }}<br>
-            {{ form.alloy }}
+            {{ form.alloy }}  
         </p>
+
+        <p>
+            {{ form.vendor.label }}<br>
+            {{ form.vendor }}
+        </p>
+
         <p>{{ form.submit() }}</p>
     </form>
 </body>

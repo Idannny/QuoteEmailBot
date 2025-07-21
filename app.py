@@ -14,6 +14,7 @@ class MaterialForm(FlaskForm):
     ], validators=[DataRequired()])
     quantity = IntegerField('Quantity', validators=[DataRequired()])
     alloy = StringField('Material Alloy', validators=[DataRequired()])
+    vendor = StringField('Vendor', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 @app.route('/', methods=['GET', 'POST'])
