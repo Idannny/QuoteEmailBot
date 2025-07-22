@@ -7,10 +7,32 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
 
 class MaterialForm(FlaskForm):
-    material_type = SelectField('Raw Material Type', choices=[
-        ('solid_bar', 'Solid Bar'),
+    component_type = SelectField('Component Type', choices=[
+        ('blk_rings', 'Blanked Rings'),
+        ('bar', 'Bar'),
         ('tube', 'Tube'),
-        ('forging', 'Forging')
+        ('ball', 'Spherical Ball'),
+        ('roller', 'Cylindrical Roller'),
+        ('cage', 'Cage'),
+        ('separator', 'Separator'),
+        ('lube', 'Lubricant'),
+        ('oil', 'Oil'),
+        ('adhesive', 'Adhesive'),
+        ('solutions', 'Solutions (Acetone, Coolant, Nitric)'),
+        ('grease', 'Grease'),
+        ('cleaners', 'Cleaners/Degreasers'),
+        ('seal', 'Seals'),
+        ('shield', 'Shields')
+    ], validators=[DataRequired()])
+
+    uom = SelectField('Unit of Measure', choices=[
+        ('ft', 'Feet'),
+        ('oz', 'Ounces'),
+        ('lb', 'Pounds'),
+        ('gal', 'Gallons'),
+        ('unit', 'Units'),
+        ('cc', 'Cubic Centimeter (cc)'),
+        ('qrt', 'Quarts')
     ], validators=[DataRequired()])
     quantity = IntegerField('Quantity', validators=[DataRequired()])
     alloy = StringField('Material Alloy', validators=[DataRequired()])
