@@ -6,15 +6,18 @@
 <body>
     <h1>Vendor Order Form</h1>
     <form method="POST">
-
-        <script>console.log("Danny")</script>
         {{ form.hidden_tag() }}
 
         <p>
             {{ form.component_type.label }}<br>
             {{ form.component_type }}
-        </p>       
-         
+        </p>     
+ 
+
+        <!-- {% if form.component_type == 'ball' %}
+            {{ form.ball_grade.label }}
+        {% endif %} -->
+
         <p>
             {{ form.quantity.label }}<br>
             {{ form.quantity }}

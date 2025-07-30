@@ -24,11 +24,6 @@ class MaterialForm(FlaskForm):
         ('seal', 'Seals'),
         ('shield', 'Shields')
     ], validators=[DataRequired()])
-    shape = SelectField('Geometry', choices=[
-        ('cylinder', 'Cylindrical'),
-        ('rectangular', 'Rectangular')
-        
-        ])
     uom = SelectField('Unit of Measure', choices=[
         ('ft', 'Feet'),
         ('oz', 'Ounces'),
@@ -38,72 +33,65 @@ class MaterialForm(FlaskForm):
         ('cc', 'Cubic Centimeter (cc)'),
         ('qrt', 'Quarts')
     ], validators=[DataRequired()])
+
+    # ball_grade = SelectField('Grade', choices=[('g5','Grade 5'), ('g25','Grade 25')])
+
     quantity = IntegerField('Quantity', validators=[DataRequired()])
     alloy = StringField('Material Alloy', validators=[DataRequired()])
-    who_email = StringField('User Email', validators=[DataRequired()])
-    who_first_name = StringField('User First Name', validators=[DataRequired()])
-    who_last_name = StringField('User Last Name', validators=[DataRequired()])
-    vendor = StringField('To Which Vendor?', validators=[DataRequired()])
-   
+    vendor = StringField('Vendor', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = MaterialForm()
     
-    if form.validate_on_submit() :
-        print("validated")
+    if form.validate_on_submit():
+        print("preparing Email: ")
+        app.logger.info('Items assembled to Emailed')
         email_content = prepare_email(form.data)
-
-        print("Look out", email_content)
         flash('Email prepared successfully!')
         return render_template('email.html', email_content=email_content)
-    
-    
     return render_template('form.html', form=form)
 
 def prepare_email(form_data):
-    raw_template = f"""
-    To whom it may concern at {form_data['vendor']},
+    ring_template = f"""
+    To whom it may concern at the offices of {form_data['vendor']}
 
-    We would like to place an order for the following:
+    We would like to place an order for the following materials:
 
-    Raw Material Type: {form_data['component_type']}
-    Shape of Item: {form_data['shape']}
-    Quantity: {form_data['quantity']} {form_data['uom']}
+    Raw Material Type: {form_data['uom']}
+    Quantity: {form_data['quantity']}
     Material Alloy: {form_data['alloy']}
 
     Please confirm the availability and provide a quote for this order.
 
     Thank you,
-    {form_data['who_first_name']} {form_data['who_last_name']}
-
+    Procurement Team
     """
-    
-    fluid_template=f"""
-    To whom it may concern at {form_data['vendor']},
 
-    We would like to place an order for the following:
+ 
+    ball_template = f"""
+    To whom
 
-    Chemical Type: {form_data['component_type']}
-    Quantity: {form_data['quantity']} {form_data['uom']}
+    We would like to place an order for the following Rolling Elements:
 
+    Material Type: {form_data['uom']}
+    Quantity: {form_data['quantity']}
+    Material Alloy: {form_data['alloy']}
+    Grade: 
 
     Please confirm the availability and provide a quote for this order.
 
     Thank you,
-    {form_data['who_first_name']} {form_data['who_last_name']}
-
+    Procurement Team
+    """
+    
+    fluid_template = f"""
     """
 
-    # fluid_list =['lube', 'adhesive', 'oil',  'solutions', 'grease', 'cleaners']
     
-    # if {form_data['component_type']} == 'lube':
-    # # if {form_data['component_type']} in fluid_list:
-    #     print("Made it in prewpare_email")
-    #     return fluid_template
 
-    return raw_template
+    return ring_template
 
 if __name__ == '__main__':
     app.run(debug=True)
